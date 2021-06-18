@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".LoginActivity"
-    >
+    tools:context=".LoginActivity">
 
     <EditText
         style="@style/FormStyle"
@@ -16,6 +15,7 @@
         android:ems="10"
         android:inputType="textEmailAddress"
         />
+
     <EditText
         style="@style/FormStyle"
         android:id="@+id/login_edit_senha"
@@ -29,6 +29,7 @@
         android:id="@+id/login_btn_logar"
         android:text="Login"
         />
+
     <Button
         style="@style/FormStyle"
         android:id="@+id/login_btn_cadastrar"
