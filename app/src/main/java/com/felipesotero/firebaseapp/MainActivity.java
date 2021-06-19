@@ -31,6 +31,11 @@ public class MainActivity extends AppCompatActivity {
             finish();
         });
 
+        btnStorage.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), StorageActivity.class);
+            startActivity(intent);
+        });
+
         textEmail.setText(auth.getCurrentUser().getEmail());
         textNome.setText(auth.getCurrentUser().getDisplayName());
 
