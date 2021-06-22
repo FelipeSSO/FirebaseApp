@@ -17,14 +17,21 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.felipesotero.firebaseapp.model.Upload;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Date;
 
 public class StorageActivity extends AppCompatActivity {
     // Referencia para o FirebaseStorage
     private FirebaseStorage storage = FirebaseStorage.getInstance();
+    // Referencia para um nó RealTimeDB
+    private DatabaseReference database = FirebaseDatabase.getInstance().getReference("uploads");
+    // Atributos
     private ImageView imageView;
     private EditText editNome;
     private Button btnUpload, btnGaleria;
@@ -54,6 +61,7 @@ public class StorageActivity extends AppCompatActivity {
             // intent implicita -> pegar um arquivo do celular
             intent.setAction(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");
+            // Inicia uma Activity, e espera um retorno(foto)
             startActivityForResult(intent,1);
         });
     }
@@ -61,16 +69,27 @@ public class StorageActivity extends AppCompatActivity {
     private void uploadImagemUri() {
         String tipo = getFileExtension(imageUri);
         // Referencia do arquivo no Firebase
+        Date d = new Date();
         String nome = editNome.getText().toString();
-        StorageReference imagemRef = storage.getReference().child("imagens/"+nome+"."+tipo);
+        // Criando uma referencia a imagem no Storage
+        StorageReference imagemRef = storage.getReference().child("imagens/"+nome+"-"+d.getTime()+"."+tipo);
 
         imagemRef.putFile(imageUri)
-        .addOnSuccessListener(taskSnapshot -> {
-            Toast.makeText(this, "Upload feito com sucesso", Toast.LENGTH_SHORT).show();
-        })
-        .addOnFailureListener(e -> {
-            e.printStackTrace();
-        });
+            .addOnSuccessListener(taskSnapshot -> {
+                Toast.makeText(this, "Upload feito com sucesso", Toast.LENGTH_SHORT).show();
+                // Inserir os dados da imagem no RealTimeDatabase -> Pegar a URL da imagem
+                taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(uri -> {
+                        // Criando referencia(database) do upload
+                        DatabaseReference refUpload = database.push();
+                        String id = refUpload.getKey();
+                        Upload upload = new Upload(id, nome, uri.toString());
+                        // Salvando upload no database
+                        refUpload.setValue(upload);
+                    });
+            })
+            .addOnFailureListener(e -> {
+                e.printStackTrace();
+            });
     }
 
     // Retornar o tipo(.png, .jpn) da imagem
@@ -79,15 +98,16 @@ public class StorageActivity extends AppCompatActivity {
         return MimeTypeMap.getSingleton().getExtensionFromMimeType(cr.getType(imageUri));
     }
 
+    // Resultado do StartActivityResult
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.i("RESULT", "requesteCode: "+ requestCode +", resultCode: "+ resultCode);
 
+        // Caso o usuario selecinou uma imagem da galeria
         if(requestCode == 1 && resultCode == Activity.RESULT_OK){
-            // Caso o usuario selecinou uma imagem da galeria
-            imageUri = data.getData();
             // Endereco da imagem selecionada
+            imageUri = data.getData();
             imageView.setImageURI(imageUri);
         }
     }
@@ -105,15 +125,15 @@ public class StorageActivity extends AppCompatActivity {
     public void uploadImagemByte(){
         byte[] data = conertImage2Byte(imageView);
         // Criar uma referencia para a imagem no storage
-        StorageReference imagemRef = storage.getReference().child("imagens/02.jpeg");
+        StorageReference imagemRef = storage.getReference().child("imagens/01.jpeg");
 
         // Realiza o upload da imagem
         imagemRef.putBytes(data)
-        .addOnSuccessListener(taskSnapshot -> {
-            Toast.makeText(this, "Upload feito com sucesso", Toast.LENGTH_SHORT).show();
-        })
-        .addOnFailureListener(e -> {
-            e.printStackTrace();
-        });
+            .addOnSuccessListener(taskSnapshot -> {
+                Toast.makeText(this, "Upload feito com sucesso", Toast.LENGTH_SHORT).show();
+            })
+            .addOnFailureListener(e -> {
+                e.printStackTrace();
+            });
     }
 }
