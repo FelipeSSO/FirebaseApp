@@ -53,9 +53,14 @@ public class MainActivity extends AppCompatActivity {
                 Upload upload = listAUploads.get(position);
                 deleteUpload(upload);
             }
+
             @Override
             public void onUploadClick(int position) {
-                //
+                Upload upload = listAUploads.get(position);
+                Intent intent = new Intent(getApplicationContext(), UpdateActivity.class);
+                //envia o upload para outra activity
+                intent.putExtra("upload", upload);
+                startActivity(intent);
             }
         });
 

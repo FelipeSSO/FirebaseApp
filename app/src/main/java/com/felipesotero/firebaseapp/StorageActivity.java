@@ -42,10 +42,10 @@ public class StorageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_storage);
-        btnUpload = findViewById(R.id.storage_btn_upload);
+        btnUpload = findViewById(R.id.update_btn_upload);
         imageView = findViewById(R.id.storage_image_cel);
-        editNome = findViewById(R.id.storage_edit_nome);
-        btnGaleria = findViewById(R.id.storage_btn_galeria);
+        editNome = findViewById(R.id.update_edit_nome);
+        btnGaleria = findViewById(R.id.update_btn_galeria);
 
         btnUpload.setOnClickListener(v -> {
             if(editNome.getText().toString().isEmpty()){
