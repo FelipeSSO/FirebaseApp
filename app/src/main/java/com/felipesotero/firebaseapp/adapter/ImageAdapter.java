@@ -1,4 +1,4 @@
-package com.felipesotero.firebaseapp.Adapter;
+package com.felipesotero.firebaseapp.adapter;
 
 import android.content.Context;
 import android.view.ContextMenu;

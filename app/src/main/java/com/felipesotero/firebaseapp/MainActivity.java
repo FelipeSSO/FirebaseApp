@@ -9,11 +9,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.felipesotero.firebaseapp.Adapter.ImageAdapter;
+import com.felipesotero.firebaseapp.adapter.ImageAdapter;
 import com.felipesotero.firebaseapp.model.Upload;
 import com.felipesotero.firebaseapp.util.LoadingDialog;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         textEmail = findViewById(R.id.main_text_email);
         textNome = findViewById(R.id.main_text_user);
         btnLogout = findViewById(R.id.main_btn_logout);
