@@ -86,14 +86,10 @@ public class UpdateActivity extends AppCompatActivity {
     public void atualizarImagem(){
         // Deletar a imagem antiga no Storage
         storage.getReferenceFromUrl(upload.getUrl()).delete();
-
         //Fazer upload da imagem atualizada no Storage
         uploadImagemUri();
-
         // Recuperar a URL da imagem no storage
-
         //Atualizar no Databese
-
     }
 
     private String getFileExtension(Uri imageUri) {
@@ -117,6 +113,7 @@ public class UpdateActivity extends AppCompatActivity {
                                 // Atualizar o objeto upload
                                 upload.setUrl(uri.toString());
                                 upload.setNomeImagem( editNome.getText().toString() );
+
                                 database.child(upload.getId()).setValue(upload)
                                     .addOnSuccessListener(aVoid -> {
                                         dialog.dismissDialog();
