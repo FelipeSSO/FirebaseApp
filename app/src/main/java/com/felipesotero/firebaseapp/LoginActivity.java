@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         auth.signInWithEmailAndPassword(email, senha)
         .addOnSuccessListener(authResult -> {
             Toast.makeText(this, "Bem Vindo", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
             startActivity(intent);
         })
         .addOnFailureListener(e ->{

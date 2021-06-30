@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.felipesotero.firebaseapp.R;
 
 public class MainFragment extends Fragment {
+
     public MainFragment() {
         // Required empty public constructor
     }
@@ -22,8 +23,9 @@ public class MainFragment extends Fragment {
         View layout = inflater.inflate(R.layout.fragment_main, container, false);
 
         TextView textView = layout.findViewById(R.id.frag_main_text);
+
         textView.setOnClickListener(v -> {
-            Toast.makeText(getActivity(), "Click", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Click", Toast.LENGTH_SHORT).show();
         });
 
         return layout;

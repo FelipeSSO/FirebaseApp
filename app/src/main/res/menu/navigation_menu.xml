@@ -4,21 +4,31 @@
         android:id="@+id/nav_menu_main"
         android:title="Tela Inicial"
         >
-
     </item>
 
     <item
         android:id="@+id/nav_menu_lista_imagens"
         android:title="Lista de Imagens"
         >
-
     </item>
 
     <item
         android:id="@+id/nav_menu_cadastro_imagens"
         android:title="Cadastro de Imagens"
         >
-
     </item>
+
+    <group
+        android:id="@+id/nav_group_2"
+        android:checkableBehavior="single"
+        >
+        <item
+            android:checkable="true"
+            android:id="@+id/nav_menu_logout"
+            android:title="Sair"
+            >
+        </item>
+
+    </group>
 
 </menu>

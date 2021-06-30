@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.felipesotero.firebaseapp.R;
 import com.felipesotero.firebaseapp.model.Upload;
 import com.felipesotero.firebaseapp.util.LoadingDialog;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -36,7 +37,9 @@ import java.util.Date;
 
 public class StorageFragment extends Fragment {
     private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
     private DatabaseReference database = FirebaseDatabase.getInstance().getReference("uploads");
+
     private ImageView imageView;
     private EditText editNome;
     private Button btnUpload, btnGaleria;
@@ -48,7 +51,9 @@ public class StorageFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        database = FirebaseDatabase.getInstance().getReference("uploads").child(auth.getUid());
         View layout = inflater.inflate(R.layout.fragment_storage, container, false);
+
         btnUpload = layout.findViewById(R.id.update_btn_upload);
         imageView = layout.findViewById(R.id.storage_image_cel);
         editNome = layout.findViewById(R.id.update_edit_nome);
