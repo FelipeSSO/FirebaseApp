@@ -53,6 +53,7 @@ public class UploadFragment extends Fragment {
                 Upload upload = listAUploads.get(position);
                 deleteUpload(upload);
             }
+
             @Override
             public void onUploadClick(int position) {
                 Upload upload = listAUploads.get(position);
@@ -102,8 +103,10 @@ public class UploadFragment extends Fragment {
                 }
                 imageAdapter.notifyDataSetChanged();
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                //
             }
         });
     }

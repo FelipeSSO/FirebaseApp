@@ -39,7 +39,6 @@ public class StorageFragment extends Fragment {
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private DatabaseReference database = FirebaseDatabase.getInstance().getReference("uploads");
-
     private ImageView imageView;
     private EditText editNome;
     private Button btnUpload, btnGaleria;
@@ -146,6 +145,7 @@ public class StorageFragment extends Fragment {
                 .addOnSuccessListener(taskSnapshot -> {
                     Toast.makeText(getActivity(), "Upload feito com sucesso", Toast.LENGTH_SHORT).show();
                 })
+
                 .addOnFailureListener(e -> {
                     e.printStackTrace();
                 });

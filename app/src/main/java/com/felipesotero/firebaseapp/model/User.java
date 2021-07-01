@@ -1,7 +1,7 @@
 package com.felipesotero.firebaseapp.model;
-
 public class User {
     private String id, email, nome, photoUrl;
+    private boolean receiveRequest;
 
     public User(){
     }
@@ -23,6 +23,9 @@ public class User {
     public String getPhotoUrl() {
         return photoUrl;
     }
+    public boolean getReceiveRequest() {
+        return receiveRequest;
+    }
 
     public void setId(String id) {
         this.id = id;
@@ -35,5 +38,12 @@ public class User {
     }
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
+    }
+    public void setReceiveRequest(boolean b) {
+        this.receiveRequest = b;
+    }
+
+    public boolean equals(User u){
+        return this.id.equals(u.getId());
     }
 }
