@@ -1,6 +1,10 @@
 package com.felipesotero.firebaseapp.model;
+
 public class User {
-    private String id, email, nome, photoUrl;
+    private String id;
+    private String email;
+    private String nome;
+    private String photoUrl;
     private boolean receiveRequest;
 
     public User(){
@@ -46,4 +50,5 @@ public class User {
     public boolean equals(User u){
         return this.id.equals(u.getId());
     }
+
 }

@@ -23,6 +23,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainFragment extends Fragment {
     private DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
@@ -73,52 +75,50 @@ public class MainFragment extends Fragment {
     }
 
     private void getUsersDatabase(){
-        usersRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                listaContato.clear();
-                for(DataSnapshot filho : snapshot.getChildren()){
-                    User u = filho.getValue(User.class);
+        // Íra armazenar usuários que já foram solicitados
+        Map<String, User> mapUsersRek = new HashMap<String, User>();
 
-                    // Comparar com o usuário logado
-                    if(!userLogged.equals(u)){
-                        /*if(cont%2 == 0){
-                            u.setReceiveRequest(true);
-                        } else {
-                            u.setReceiveRequest(false);
-                        }*/
-                        listaContato.add(u);
-                    }
-                }
-
-                // Verificar quais contatos foram adicionados
-                requestRef.child(userLogged.getId()).child("send").addValueEventListener(new ValueEventListener() {
-
+        requestRef.child(userLogged.getId()).child("send")
+                .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot no_filho : snapshot.getChildren()){
-                            User usuarioSolicitado = no_filho.getValue(User.class);
+                        for(DataSnapshot u : snapshot.getChildren()){
+                            User user = u.getValue(User.class);
 
-                            for(int i=0; i<listaContato.size(); i++){
-                                if(listaContato.get(i).equals(usuarioSolicitado)){
-                                    listaContato.get(i).setReceiveRequest(true);
-                                }
-                            }
+                            // Adicionando o usuario no HashMap
+                            mapUsersRek.put(user.getId(), user);
                         }
-                        userAdapter.notifyDataSetChanged();
+
+                        // ler o nó usuário
+                        usersRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                listaContato.clear();
+
+                                for(DataSnapshot u : snapshot.getChildren()) {
+                                    User user = u.getValue(User.class);
+
+                                    if(mapUsersRek.containsKey(user.getId())){
+                                        user.setReceiveRequest(true);
+                                    }
+                                    if(!userLogged.equals(user)){
+                                        listaContato.add(user);
+                                    }
+                                }
+                                userAdapter.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                //
+                            }
+                        });
                     }
+
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         //
                     }
                 });
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                //
-            }
-        });
     }
-
 }
