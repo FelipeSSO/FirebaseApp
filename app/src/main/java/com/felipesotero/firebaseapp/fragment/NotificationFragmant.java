@@ -15,12 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.felipesotero.firebaseapp.NavigationActivity;
 import com.felipesotero.firebaseapp.R;
-import com.felipesotero.firebaseapp.UpdateActivity;
-import com.felipesotero.firebaseapp.util.App;
+import com.felipesotero.firebaseapp.util.NotificationReceive;
 
 import static com.felipesotero.firebaseapp.util.App.CHANNEL_1;
 
@@ -53,17 +51,24 @@ public class NotificationFragmant extends Fragment {
                                          .setDestination(R.id.nav_menu_lista_imagens)
                                          .createPendingIntent();
 
+            /* Criar um Broadcast receive ->
+               - Ele deve ser ativado EXPLICITAMENTE!
+               - Não deve durar mais de 10 seg*/
+            Intent brodcastIntent = new Intent(getContext(), NotificationReceive.class);
+            brodcastIntent.putExtra("Toast", msg);
+
+            PendingIntent actionIntent = PendingIntent.getBroadcast(getContext(),
+                                        0, brodcastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             // Criar a Notificação
             Notification notification = new NotificationCompat.Builder(getContext(), CHANNEL_1)
                                         .setSmallIcon(R.drawable.ic_account_circle_black_24dp)
                                         .setContentTitle(title).setContentText(msg)
-                                        .setContentIntent(contentIntent)
-                                        //.addAction(R.drawable.ic_account_circle_black_24dp, "Toast", actionIntent)
-                                        .setPriority(Notification.PRIORITY_HIGH).build();
+                                        .addAction(R.drawable.ic_account_circle_black_24dp, "Toast", actionIntent)
+                                        .setContentIntent(contentIntent).setPriority(Notification.PRIORITY_HIGH).build();
 
             notificationManager.notify(1, notification);
         });
-
         return layout;
     }
+
 }
